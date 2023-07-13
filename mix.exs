@@ -25,7 +25,8 @@ defmodule ThumborPath.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:stream_data, "~> 0.6.0"}
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
+      {:stream_data, "~> 0.6.0", only: :test}
     ]
   end
 end

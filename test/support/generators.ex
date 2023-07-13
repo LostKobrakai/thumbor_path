@@ -4,8 +4,16 @@ defmodule ThumborPath.Generators do
   def gen_valid_uri_struct(secret) do
     gen all uri <- gen_uri_struct() do
       case secret do
-        nil -> %{uri | hmac: :unsafe}
-        _ -> %{uri | hmac: ThumborPath.Encoder.generate_hmac(uri, secret)}
+        nil ->
+          %{uri | hmac: :unsafe}
+
+        _ ->
+          hmac =
+            uri
+            |> ThumborPath.Encoder.build_image_path()
+            |> ThumborPath.signature(secret)
+
+          %{uri | hmac: hmac}
       end
     end
   end

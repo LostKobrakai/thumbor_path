@@ -1,7 +1,9 @@
 defmodule ThumborPath.Encoder do
+  @moduledoc false
+
   def build(%ThumborPath{} = uri, secret) do
     img_path = build_image_path(uri)
-    encode(%{uri | hmac: signature(img_path, secret)}, img_path)
+    encode(%{uri | hmac: ThumborPath.signature(img_path, secret)}, img_path)
   end
 
   def encode(%ThumborPath{} = uri, img_path \\ nil) do
@@ -15,11 +17,7 @@ defmodule ThumborPath.Encoder do
   end
 
   @doc false
-  def generate_hmac(%ThumborPath{} = uri, secret) do
-    signature(build_image_path(uri), secret)
-  end
-
-  defp build_image_path(%ThumborPath{} = uri) do
+  def build_image_path(%ThumborPath{} = uri) do
     commands =
       [
         if(uri.meta, do: "meta", else: nil),
@@ -66,12 +64,5 @@ defmodule ThumborPath.Encoder do
     [commands, URI.encode_www_form(uri.source)]
     |> List.flatten()
     |> Path.join()
-  end
-
-  # Select the signature to be used. Either `unsafe` or HMAC token
-  def signature(_msg, nil), do: :unsafe
-
-  def signature(msg, secret) do
-    :crypto.mac(:hmac, :sha, secret, msg) |> Base.url_encode64()
   end
 end

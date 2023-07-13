@@ -1,5 +1,6 @@
 defmodule ThumborPath.Parser do
   @moduledoc false
+
   @parts [
     :hmac,
     :meta,
