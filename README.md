@@ -17,7 +17,7 @@ iex> path =
 ...>   }
 ...>   |> ThumborPath.build(secret)
 iex>
-iex> URI.new!("https://thumbor.example.com/")
+iex> URI.parse("https://thumbor.example.com/")
 ...> |> Map.put(:path, path)
 ...> |> URI.to_string()
 "https://thumbor.example.com/A0LrsiL0V_fUSCx_ggL6udnRTfE=/100x100:750x750/200x200/https%3A%2F%2Fsource.unsplash.com%2FTCpfPxKPOvk%2F800x800"
